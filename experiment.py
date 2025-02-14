@@ -513,39 +513,6 @@ def test(
 
     num_eval_episodes = variant['num_eval_episodes']
     device = variant['device']
-    # f1 = np.loadtxt('../states.txt')
-    # f2 = open('../rewards.txt', 'r')
-    # f3 = np.loadtxt('../actions.txt')
-    # while True:
-    #     image_array_flat = f1[i]
-    #     image_array = np.array(image_array_flat).reshape((84, 84))
-    #     states.append(image_array)
-    #
-    #     traj_lens.append(len(states))
-    #     line_true = f2.readline()  # 该方法每次读出一行内容，返回一个字符串
-    #     if line_true and line_true[0] == "-":
-    #         negative = True
-    #         line_true = line_true[1:]
-    #     else:
-    #         negative = False
-    #     num = float(line_true)
-    #     if negative:
-    #         num = -num
-    #     r = r + float(num)
-    #     returns.append(r)
-    #     if not line_true:
-    #         break
-    #     image_array_flat1 = f3[i]
-    #     image_array1 = np.array(image_array_flat1).reshape((1, 6300))
-    #     actions.append(image_array1)
-    #
-    #     i = i + 1
-    #     if i == 3679:
-    #         break
-    #
-    # states1 = np.concatenate(states, axis=0)
-    # state_mean, state_std =np.mean(states1, axis=0), np.std(states1, axis=0) + 1e-6
-    # print(state_mean, state_std)
 
     def eval_episodes(target_rew):
         def fn(model):
@@ -568,12 +535,6 @@ def test(
                     )
                 returns.append(ret)
                 lengths.append(length)
-            # return {
-            #     f'target_{target_rew}_return_mean': np.mean(np.array(returns.cpu())),
-            #     f'target_{target_rew}_return_std': np.std(np.array(returns.cpu())),
-            #     f'target_{target_rew}_length_mean': np.mean(lengths.cpu()),
-            #     f'target_{target_rew}_length_std': np.std(lengths.cpu()),
-            # }
         return fn
 
     warmup_steps = variant['warmup_steps']
@@ -584,8 +545,6 @@ def test(
         weight_decay=variant['weight_decay'],
     )
     print(model.parameters())
-    #LambdaLR也就可以理解成自定义规则去调整网络的学习率。从另一个角度理解，数学中的 λ \lambda λ一般是作为系数使用，
-    # 因此这个学习率调度器的作用就是将初始学习率乘以人工规则所生成的系数 λ \lambda λ。
 
     scheduler = torch.optim.lr_scheduler.LambdaLR(
         optimizer,
